@@ -1,26 +1,76 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+   
+import React, { Component } from "react"
+import "./App.css"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="wrapper">
+      <Keypad />
     </div>
-  );
+  )
 }
 
-export default App;
+class Keypad extends Component {
+  state = {
+    count: [],
+    keys: [
+      { num: "clear", type: "clearButton" },
+      { num: "/", type: "operatorButton" },
+      { num: "7", type: "numberButton" },
+      { num: "8", type: "numberButton" },
+      { num: "9", type: "numberButton" },
+      { num: "*", type: "operatorButton" },
+      { num: "4", type: "numberButton" },
+      { num: "5", type: "numberButton" },
+      { num: "6", type: "numberButton" },
+      { num: "-", type: "operatorButton" },
+      { num: "1", type: "numberButton" },
+      { num: "2", type: "numberButton" },
+      { num: "3", type: "numberButton" },
+      { num: "+", type: "operatorButton" },
+      { num: "0", type: "numberButton zero" },
+      { num: "=", type: "operatorButton" }
+    ]
+  }
+
+  number = name => {
+    if (name === "clear") {
+      this.setState({ count: [] })
+    } else if (name === "=") {
+      this.setState(prevState => ({
+        count: [eval(prevState.count.join(""))]
+      }))
+    } else {
+      this.setState(prevState => ({
+        count: [...prevState.count, name]
+      }))
+    }
+  }
+
+  render() {
+    return (
+      <div className="calc">
+        <div className="row">
+          <p>{this.state.count}</p>
+        </div>
+        <div className="buttonsWrapper">
+          <div className="buttons">
+            {this.state.keys.map(key => {
+              return (
+                <button
+                  className={key.type + " button"}
+                  onClick={() => this.number(key.num)}
+                >
+                  {key.num}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+      </div>
+    )
+  }
+}
+
+export default App
